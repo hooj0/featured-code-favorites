@@ -1,4 +1,4 @@
-package com.masget.command.utils;
+package com.hoojo.command.utils;
 
 import java.util.Collection;
 import java.util.Map;
