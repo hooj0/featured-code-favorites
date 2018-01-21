@@ -1,4 +1,4 @@
-package com.masget.command.log;
+package com.hoojo.command.log;
 
 import org.apache.commons.lang.exception.ExceptionUtils;
 import org.slf4j.Logger;
