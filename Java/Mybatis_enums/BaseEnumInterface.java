@@ -1,4 +1,4 @@
-package com.masget.command.mybatis;
+package com.hoojo.command.mybatis;
 
 //import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
