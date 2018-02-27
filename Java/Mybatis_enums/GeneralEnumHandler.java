@@ -1,4 +1,4 @@
-package com.masget.command.mybatis;
+package com.hoojo.command.mybatis;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
