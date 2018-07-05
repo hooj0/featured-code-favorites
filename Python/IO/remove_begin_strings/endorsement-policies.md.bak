@@ -1,0 +1,83 @@
+   1 # Endorsement policies
+   2 
+   3 Endorsement policies are used to instruct a peer on how to decide whether a transaction 
+   4 is properly endorsed. When a peer receives a transaction, it invokes the VSCC (Validation 
+   5 System Chaincode) associated with the transaction's Chaincode as part of the 
+   6 transaction validation flow to determine the validity of the transaction. Recall that a 
+   7 transaction contains one or more endorsement from as many endorsing peers. VSCC is tasked
+   8 to make the following determinations:
+   9  - all endorsements are valid (i.e. they are valid signatures from valid certificates over the expected message)
+  10  - there is an appropriate number of endorsements
+  11  - endorsements come from the expected source(s)
+  12  
+  13 Endorsement policies are a way of specifying the second and third points.
+  14 
+  15 ## Endorsement policy design
+  16 
+  17 Endorsement policies have two main components:
+  18  - a principal
+  19  - a threshold gate
+  20 
+  21 A principal `P` identifies the entity whose signature is expected.
+  22 
+  23 A threshold gate `T` takes two inputs: an integer `t` (the threshold) and a list of `n` 
+  24 principals or gates; this gate essentially captures the expectation that out of those
+  25 `n` principals or gates, `t` are requested to be satisfied. 
+  26 
+  27 For example:
+  28  - `T(2, 'A', 'B', 'C')` requests a signature from any 2 principals out of 'A', 'B' or 'C';
+  29  - `T(1, 'A', T(2, 'B', 'C'))` requests either one signature from principal `A` or 1 signature 
+  30    from `B` and `C` each.
+  31     
+  32 ## Endorsement policy syntax in the CLI
+  33 
+  34 In the CLI, a simple language is used to express policies in terms of boolean expressions
+  35 over principals.
+  36 
+  37 A principal is described in terms of the MSP that is tasked to validate the identity of 
+  38 the signer and of the role that the signer has within that MSP. Currently, two roles are 
+  39 supported: **member** and **admin**. Principals are described as `MSP`.`ROLE`, where `MSP` 
+  40 is the MSP ID that is required, and `ROLE` is either one of the two strings `member` and 
+  41 `admin`. Examples of valid  principals are `'Org0.admin'` (any administrator of the `Org0` 
+  42 MSP) or `'Org1.member'` (any member of the `Org1` MSP).
+  43 
+  44 The syntax of the language is:
+  45 
+  46 `EXPR(E[, E...])`
+  47 
+  48 where `EXPR` is either `AND` or `OR`, representing the two boolean expressions and `E` is 
+  49 either a principal (with the syntax described above) or another nested call to `EXPR`.
+  50 
+  51 For example:
+  52  - `AND('Org1.member', 'Org2.member', 'Org3.member')` requests 1 signature from each of the three principals
+  53  - `OR('Org1.member', 'Org2.member')` requests 1 signature from either one of the two principals
+  54  - `OR('Org1.member', AND('Org2.member', 'Org3.member'))` requests either one signature from 
+  55    a member of the `Org1` MSP or 1 signature from a member of the `Org2` MSP and 1 signature 
+  56    from a member of the `Org3` MSP.
+  57     
+  58 ## Specifying endorsement policies for a chaincode
+  59 
+  60 Using this language, a chaincode deployer can request that the endorsements for a chaincode be
+  61 validated against the specified policy. NOTE - the default policy requires one signature 
+  62 from a member of the `DEFAULT` MSP). This is used if a policy is not specified in the CLI.
+  63 
+  64 The policy can be specified at deploy time using the `-P` switch, followed by the policy.
+  65 
+  66 For example:
+  67 
+  68 ```
+  69 peer chaincode deploy -C testchainid -n mycc -p github.com/hyperledger/fabric/examples/chaincode/go/chaincode_example02 -c '{"Args":["init","a","100","b","200"]}' -P "AND('Org1.member', 'Org2.member')"
+  70 ```
+  71 
+  72 This command deploys chaincode `mycc` on chain `testchainid` with the policy `AND('Org1.member', 'Org2.member')`.
+  73 
+  74 ## Future enhancements
+  75 
+  76 In this section we list future enhancements for endorsement policies:
+  77  - alongside the existing way of identifying principals by their relationship with an MSP, we plan 
+  78    to identify principals in terms of the _Organization Unit (OU)_ expected in their certificates; 
+  79    this is useful to express policies where we request signatures from any identity displaying a 
+  80    valid certificate with an OU matching the one requested in the definition of the principal.
+  81  - instead of the syntax `AND(., .)` we plan to move to a more intuitive syntax `. AND .`
+  82  - we plan to expose generalized threshold gates in the language as well alongside `AND` (which is 
+  83    the special `n`-out-of-`n` gate) and `OR` (which is the special `1`-out-of-`n` gate)
