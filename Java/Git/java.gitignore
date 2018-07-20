@@ -30,3 +30,7 @@ hs_err_pid*
 .settings
 .settings/*
 */.settings/*
+.idea
+.idea/*
+*/.idea/*
+*.iml
