@@ -7,6 +7,9 @@
 	<modelVersion>4.0.0</modelVersion>
 	<packaging>jar</packaging>
 	
+	<!--
+		@changelog Add jar source compiler plugin & lombok plugin
+	-->
 	<name>data structure example</name>
 	<description> Data structure implemented in Go, Python, JavaScript, Java.</description>
 	<url>https://github.com/hooj0/data-struct</url>
@@ -97,11 +100,47 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.3</version>
 				<configuration>
-					<encoding>UTF-8</encoding>
+					<encoding>${project.build.sourceEncoding}</encoding>
 					<source>${java.version}</source>
 					<target>${java.version}</target>
+				</configuration>
+			</plugin>		
+		
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.0.1</version>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.projectlombok</groupId>
+				<artifactId>lombok-maven-plugin</artifactId>
+				<version>1.18.0.0</version>
+				<configuration>
+					<addOutputDirectory>false</addOutputDirectory>
+					<sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	
+	<distributionManagement>
+	    <repository>
+	        <id>releases</id>
+	        <url>http://maven.xxx.com:7078/nexus/content/repositories/releases/</url>
+	    </repository>
+	
+	    <snapshotRepository>
+	        <id>Snapshots</id>
+	        <url>http://maven.xxx.com:7078/nexus/content/repositories/snapshots/</url>
+	    </snapshotRepository>
+	</distributionManagement>
 </project>
