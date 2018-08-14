@@ -1,5 +1,5 @@
 #!/bin/bash
-# @changelog Add remote push action, update git status, add log print
+# @changelog Add auto generator comment & file name generator comment
 
 #set -e
 #set -o pipefail
@@ -236,6 +236,15 @@ function generatorComment() {
 			#comment=""
 		;;
 	esac	
+	
+	if [ -z $comment ]; then
+		if [ $comment_mode == "auto" ]; then
+			fileName=`basename $file`
+			#fileName=${fileName%.*}		
+			comment=`echo $fileName | sed -z 's/[A-Z]/ &/g' | tr '[A-Z]' [a-z]	| tr '.' ' '`
+			#echo "------------> $comment"
+		fi	
+	fi	
 }
 
 # fetch comment content status<add/remove/modify/update/rename/delete>
@@ -305,6 +314,7 @@ function setup() {
 	
 debug_mode="false"
 push="false"	
+comment_mode="input"
 for param in "$@"; do
     log "green" "====> 参数: $param"
     if [ $param == "-d" -o $param == "--debug" ]; then
@@ -312,6 +322,9 @@ for param in "$@"; do
     fi
     if [ $param == "-p" -o $param == "--push" ]; then
     	push="true"
+    fi
+    if [ $param == "-m" -o $param == "--comment" ]; then
+    	comment_mode="auto"
     fi
 done
 	
