@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration>
+	
+	<!-- 
+		@changelog Add system sdk hyperledger fabric `log4j` xml config 
+		
+		%n - 换行
+		%m - 日志内容
+		%p - 日志级别(FATAL， ERROR，WARN， INFO，DEBUG or custom)
+		%r - 程序启动到现在的毫秒数
+		%t - 当前线程名
+		%d - 日期和时间, 一般使用格式 %d{yyyy-MM-dd HH:mm:ss， SSS}
+		%l - 输出日志事件的发生位置， 同 %F%L%C%M
+		%F - java 源文件名
+		%L - java 源码行数
+		%C - java 类名，%C{1} 输出最后一个元素
+		%M - java 方法名
+	-->
+	
+    <!-- 将日志信息输出到控制台 -->
+    <appender name="ConsoleAppender" class="org.apache.log4j.ConsoleAppender">
+        <!-- 设置日志输出的样式 -->
+        <layout class="org.apache.log4j.PatternLayout">
+            <!-- 设置日志输出的格式 -->
+            <!-- <param name="ConversionPattern" value="[%d{yyyy-MM-dd HH:mm:ss:SSS}] [%-5p] [%l] %m%n" /> -->
+            <param name="ConversionPattern" value="[%-5p] [%C{2} %L] %m%n" />
+        </layout>
+        
+        <!--过滤器设置输出的级别-->
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <!-- 设置日志输出的最小级别 -->
+            <param name="levelMin" value="DEBUG" />
+            <!-- 设置日志输出的最大级别 -->
+            <param name="levelMax" value="ERROR" />
+            <!-- 设置日志输出的xxx，默认是false -->
+            <param name="AcceptOnMatch" value="true" />
+        </filter>
+    </appender>
+
+	<logger name="io.grpc.netty">
+		<level value="ERROR" />
+	</logger>
+	<logger name="io.netty">
+		<level value="ERROR" />
+	</logger>
+	<logger name="org.springframework">
+		<level value="INFO" />
+	</logger> 
+	
+	<logger name="org.apache.http">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.hyperledger.fabric.sdk">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="org.hyperledger.fabric_ca.sdk">
+		<level value="DEBUG" />
+	</logger>
+	<logger name="io.github.hooj0.springdata.fabric.chaincode">
+		<level value="DEBUG" />
+	</logger>
+	
+	<!-- 单独配置，效果和放到logger -> root下一样 -->
+	<category name="com.xxx.xxx.aop" additivity="false">
+		<level value="INFO" />
+		
+		<appender-ref ref="dblog" />
+		<appender-ref ref="console" />
+	</category>
+
+	<logger name="org.quartz">
+		<level value="warn" />
+	</logger>
+
+	<!-- 设置com.aa.bb.service路径下的日志信息级别为info级别 -->
+	<logger name="com.aa.bb.service" additivity="true">
+		<level value="info" />
+	</logger>
+ 
+ 	<!-- 这个就是自定义的一个logger -->
+	<!-- 输出级别是info级别及以上的日志，不要怕，StreamOperateFile已经过滤，只输出info级别的日志 -->
+	<!-- additivity 这个默认是true，即继承父类 root logger -->
+	<!-- 也就是说，你的这个日志也会在root的logger里面输出的，我这里配置false，就是不继承，各走各的。 -->
+	<!-- appender-ref 也就是说这个logger的输出目的地是哪里，ref就是关联到上面声明的一个file，一个console -->
+	<logger name="StreamOperateFile" additivity="false">
+		<level value="info" />
+		<appender-ref ref="StreamOperateFile" />
+		<appender-ref ref="console" />
+	</logger>
+	
+	<!-- 根logger -->
+	<!-- 输出级别是info级别及以上的日志，下面的ref关联的两个appender没有filter设置，所以，info及以上的日志都是会输出到这2个appender的 -->
+	<root>
+		<priority value="info" />
+		<appender-ref ref="console" />
+		<appender-ref ref="File" />
+	</root>
+	
+	
+    <root>
+        <level value ="DEBUG"/>
+        <appender-ref ref="ConsoleAppender"/>
+    </root>
+
+</log4j:configuration>
