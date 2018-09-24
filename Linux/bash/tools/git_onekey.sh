@@ -1,5 +1,5 @@
 #!/bin/bash
-# @changelog Add auto generator comment & file name generator comment
+# @changelog Add auto set system datetime by commit file create date
 
 #set -e
 #set -o pipefail
@@ -96,6 +96,10 @@ function commitCode() {
 	file="$2"
 	comment="$3"
 	
+    if [ "$ctime_mode" == "true" ]; then
+        setSystemDate $file
+    fi
+    
 	log "_black" "git add $file"
 	if [ $debug_mode == "false" ]; then
 		git add "$file"
@@ -157,6 +161,15 @@ function commitCode() {
 	    	log "rrr" "===================================> NOT FOUND Match Status：$code_status"
 	    ;;
 	esac
+}
+
+function setSystemDate() {
+    #log 'yellow' "file ==> $1"
+    file="$1"
+    
+    sysdate=`stat -c %w ${file}`
+    log 'yellow' "set system date: ${sysdate}"
+    date -s "${sysdate}"
 }
 
 function findCommitFiles() {
@@ -315,6 +328,7 @@ function setup() {
 debug_mode="false"
 push="false"	
 comment_mode="input"
+ctime_mode="false"
 for param in "$@"; do
     log "green" "====> 参数: $param"
     if [ $param == "-d" -o $param == "--debug" ]; then
@@ -326,9 +340,11 @@ for param in "$@"; do
     if [ $param == "-m" -o $param == "--comment" ]; then
     	comment_mode="auto"
     fi
+    if [ $param == "-c" -o $param == "--ctime" ]; then
+    	ctime_mode="true"
+    fi
 done
 	
 setup
-
 
 
