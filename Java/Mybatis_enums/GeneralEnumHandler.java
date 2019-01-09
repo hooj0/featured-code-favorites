@@ -11,7 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * <b>function:</b> 枚举类型转换处理器
+ * 枚举类型转换处理器
  * 
  * @author hoojo
  * @createDate 2017-3-13 上午9:51:06
