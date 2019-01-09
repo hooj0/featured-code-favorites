@@ -11,7 +11,7 @@ import com.alibaba.fastjson.serializer.ObjectSerializer;
 import com.masget.command.utils.BeanMapUtils;
 
 /**
- * <b>function:</b> 枚举转换json
+ * 枚举转换json
  * 
  * @author hoojo
  * @createDate 2017-3-18 下午2:15:27
