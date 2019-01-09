@@ -3,7 +3,7 @@ package com.masget.command.mybatis;
 //import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
- * <b>function:</b> 枚举接口
+ * 枚举接口
  * @author hoojo
  * @createDate 2017-3-13 上午9:48:16
  * @file BaseEnumInterface.java
