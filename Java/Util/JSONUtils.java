@@ -1,4 +1,4 @@
-package com.masget.command.utils;
+package com.hooj0.command.utils;
 
 import org.apache.commons.lang.ClassUtils;
 
@@ -7,9 +7,9 @@ import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.SerializeFilter;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.serializer.ValueFilter;
-import com.masget.command.mybatis.BaseEnumInterface;
-import com.masget.command.mybatis.EnumJsonSerializer;
-import com.masget.entity.RetStruct;
+import com.hooj0.command.mybatis.BaseEnumInterface;
+import com.hooj0.command.mybatis.EnumJsonSerializer;
+import com.hooj0.entity.RetStruct;
 
 /**
  * fastjson 工具类
