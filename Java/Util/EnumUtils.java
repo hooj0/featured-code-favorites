@@ -1,4 +1,4 @@
-package com.masget.command.utils;
+package com.hoojo.command.utils;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
@@ -9,9 +9,9 @@ import org.apache.commons.lang.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.masget.command.enums.AccountType;
-import com.masget.command.mybatis.BaseEnumInterface;
-import com.masget.enums.base.EnableFlag;
+import com.hoojo.command.enums.AccountType;
+import com.hoojo.command.mybatis.BaseEnumInterface;
+import com.hoojo.enums.base.EnableFlag;
 
 /**
  * 枚举值转换枚举对象
