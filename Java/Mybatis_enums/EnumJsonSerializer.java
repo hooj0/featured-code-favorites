@@ -1,4 +1,4 @@
-package com.masget.command.mybatis;
+package com.hoojo.command.mybatis;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -8,7 +8,7 @@ import org.apache.commons.lang.ClassUtils;
 
 import com.alibaba.fastjson.serializer.JSONSerializer;
 import com.alibaba.fastjson.serializer.ObjectSerializer;
-import com.masget.command.utils.BeanMapUtils;
+import com.hoojo.command.utils.BeanMapUtils;
 
 /**
  * 枚举转换json
