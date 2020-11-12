@@ -1,5 +1,5 @@
 #!/bin/bash
-# @changelog Add auto set system datetime by commit file create date
+# @changelog Add auto generator comment & file name generator comment
 
 #set -e
 #set -o pipefail
@@ -167,12 +167,17 @@ function setSystemDate() {
     #log 'yellow' "file ==> $1"
     file="$1"
     
-    m="`echo $(($RANDOM%2+1))`"
+    months=(1 2 3 5 6)
+    m="`echo $(($RANDOM%5))`"
+    hours=(9 10 11 12 14 15 16 17 18 20 21)
+    h="`echo $(($RANDOM%11))`"
+    
+    #m="`echo $(($RANDOM%12+1))`"
     d="`echo $(($RANDOM%30+1))`"
-    h="`echo $(($RANDOM%24+1))`"
+    #h="`echo $(($RANDOM%23+1))`"
     s="`echo $(($RANDOM%60+1))`"
+    sysdate="2018-${months[m]}-${d} ${hours[h]}:${s}:55.070807600 +0800"
     #sysdate=`stat -c %w ${file}`
-    sysdate="2019-${m}-${d} ${h}:${s}:55.070807600 +0800"
     log 'yellow' "set system date: ${sysdate}"
     date -s "${sysdate}"
 }
@@ -310,8 +315,8 @@ function fetchCommentStatus() {
 
 function pushGit() {
 	git status
-	
-	git push origin master
+	# git push origin master
+	git push
 }
 
 # setup shell
@@ -351,4 +356,3 @@ for param in "$@"; do
 done
 	
 setup
-
