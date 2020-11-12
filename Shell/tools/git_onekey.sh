@@ -176,6 +176,7 @@ function setSystemDate() {
     d="`echo $(($RANDOM%30+1))`"
     #h="`echo $(($RANDOM%23+1))`"
     s="`echo $(($RANDOM%60+1))`"
+    
     sysdate="2018-${months[m]}-${d} ${hours[h]}:${s}:55.070807600 +0800"
     #sysdate=`stat -c %w ${file}`
     log 'yellow' "set system date: ${sysdate}"
